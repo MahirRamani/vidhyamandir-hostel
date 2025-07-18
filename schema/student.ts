@@ -1,0 +1,57 @@
+import { z } from "zod";
+
+export const studentSchema = z.object({
+  name: z.object({
+    firstName: z.string(),
+    middleName: z.string(),
+    lastName: z.string(),
+  }),
+  profileImageUrl: z.string(),
+  dateOfBirth: z.date(),
+  studentId: z.string(),
+  isPermanentId: z.boolean().default(false),
+  idConversionDate: z.date().optional(),
+  roomId: z.string().optional(),
+  bedNo: z.number().optional(),
+  departmentId: z.string().optional(),
+  admissionYear: z.string(),
+  schoolRollNo: z.string(),
+  standard: z.number(),
+  lastExamGiven: z.string(),
+  lastExamPercentage: z.number(),
+  medium: z.enum(["Gujarati", "Hindi", "English"]),
+  hobbies: z.array(z.string()).optional(),
+  bloodGroup: z.enum(["A+", "A-", "B+", "B-", "O+", "O-", "AB+", "AB-"]).optional(),
+  illnesses: z.array(z.string()).optional(),
+  allergies: z.array(z.string()).optional(),
+  fatherName: z.object({
+    firstName: z.string(),
+    middleName: z.string(),
+    lastName: z.string(),
+  }),
+  fatherMobileNumber: z.string(),
+  fatherOccupation: z.string(),
+  motherName: z.object({
+    firstName: z.string(),
+    middleName: z.string(),
+    lastName: z.string(),
+  }),
+  motherMobileNumber: z.string().optional(),
+  motherOccupation: z.string().optional(),
+  address: z.object({
+    address: z.string(),
+    city: z.string(),
+    state: z.string(),
+    pinCode: z.string(),
+    country: z.string(),
+  }),
+  addmissionDate: z.date(),
+  leavingDate: z.date().optional(),
+  nocDate: z.date().optional(),
+  status: z.enum(["Pending", "Tested", "Active", "NOC", "NOC-Cancel"]),
+  isSatsangi: z.boolean(),
+  isBAPSSatsangi: z.boolean().optional(),
+  yearsOfSatsang: z.number().optional(),
+});
+
+type Student = z.infer<typeof studentSchema>;

@@ -28,7 +28,6 @@ interface SidebarProps {
 const navigation = [
   { name: "Dashboard", href: "/", icon: LayoutDashboard },
   { name: "Buildings", href: "/buildings", icon: Building },
-  { name: "Rooms", href: "/rooms", icon: Building }, // Added Rooms link
   { name: "Students", href: "/students", icon: Users },
   { name: "Student Profiles", href: "/student-profiles", icon: UserCheck },
   { name: "Departments", href: "/departments", icon: Briefcase }, // New: Departments link
