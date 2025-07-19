@@ -1,85 +1,3 @@
-// import { useForm } from "react-hook-form";
-// import { zodResolver } from "@hookform/resolvers/zod";
-// import { basicInfoSchema } from "@/schema/student-form";
-// import { StepProps } from "@/types/student-form";
-// import {
-//   Form,
-//   FormControl,
-//   FormDescription,
-//   FormField,
-//   FormItem,
-//   FormLabel,
-//   FormMessage,
-// } from "@/components/ui/form";
-// import { useCallback, useEffect } from "react";
-// import { Input } from "@/components/ui/input";
-// import { debounce } from "lodash";
-// import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-// import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-// import { Button } from "@/components/ui/button";
-// import { cn } from "@/lib/utils";
-// import { format } from "date-fns";
-// import { CalendarIcon } from "lucide-react";
-// import { Calendar } from "@/components/ui/calendar";
-// import { Textarea } from "@/components/ui/textarea";
-
-// export function BasicInfoForm({
-//   onNext,
-//   formData,
-//   setFormData,
-//   validateStep,
-// }: StepProps) {
-//   const basicInfoForm = useForm({
-//     resolver: zodResolver(basicInfoSchema),
-//     defaultValues: {
-//       name: {
-//         firstName: formData.name.firstName,
-//         middleName: formData.name.middleName,
-//         lastName: formData.name.lastName,
-//       },
-//       profileImageUrl: formData.profileImageUrl,
-//       dateOfBirth: formData.dateOfBirth,
-//       studentId: formData.studentId,
-//       isPermanentId: formData.isPermanentId,
-//       hobbies: formData.hobbies,
-//       status: formData.status,
-//       isSatsangi: formData.isSatsangi,
-//       isBAPSSatsangi: formData.isBAPSSatsangi,
-//       yearsOfSatsang: formData.yearsOfSatsang,
-//     },
-//   });
-
-//   //   // Auto-save on field change
-//   //   const watchedValues = form.watch();
-//   //   useEffect(() => {
-//   //     setFormData(watchedValues);
-//   //   }, [watchedValues, setFormData]);
-
-//   const debouncedSave = useCallback(
-//     debounce((data) => {
-//       setFormData(data);
-//     }, 300),
-//     [setFormData]
-//     );
-    
-//     // Watch specific fields instead of all values
-//   const watchedValues = basicInfoForm.watch();
-  
-//   useEffect(() => {
-//     // Only save if form is dirty (has changes)
-//     if (basicInfoForm.formState.isDirty) {
-//       debouncedSave(watchedValues);
-//     }
-//   }, [watchedValues, debouncedSave, basicInfoForm.formState.isDirty]);
-
-//   const onSubmit = async (data: any) => {
-//     setFormData(data);
-//     const isValid = await validateStep();
-//     if (isValid && onNext) {
-//       onNext();
-//     }
-//   };
-
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { basicInfoSchema } from "@/schema/student-form";
@@ -104,7 +22,6 @@ import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
 import { Textarea } from "@/components/ui/textarea";
-import { toast } from "sonner";
 
 export function BasicInfoForm({
   onNext,
@@ -132,14 +49,20 @@ export function BasicInfoForm({
     },
   });
 
+  //   // Auto-save on field change
+  //   const watchedValues = form.watch();
+  //   useEffect(() => {
+  //     setFormData(watchedValues);
+  //   }, [watchedValues, setFormData]);
+
   const debouncedSave = useCallback(
     debounce((data) => {
       setFormData(data);
     }, 300),
     [setFormData]
-  );
+    );
     
-  // Watch specific fields instead of all values
+    // Watch specific fields instead of all values
   const watchedValues = basicInfoForm.watch();
   
   useEffect(() => {
@@ -150,29 +73,13 @@ export function BasicInfoForm({
   }, [watchedValues, debouncedSave, basicInfoForm.formState.isDirty]);
 
   const onSubmit = async (data: any) => {
-    try {
-      // Update form data first
-      setFormData(data);
-      
-      // Validate the step
-      const isValid = await validateStep();
-      
-      if (isValid && onNext) {
-        onNext();
-      }
-      // If validation fails, the toast will be shown from validateStep
-    } catch (error) {
-      // Handle any unexpected errors
-      toast.error("Unexpected Error", {
-        description: "An unexpected error occurred. Please try again.",
-        duration: 3000,
-      });
-      
-      if (process.env.NODE_ENV === 'development') {
-        console.error("Form submission error:", error);
-      }
+    setFormData(data);
+    const isValid = await validateStep();
+    if (isValid && onNext) {
+      onNext();
     }
   };
+
   return (
     <Form {...basicInfoForm}>
       <form onSubmit={basicInfoForm.handleSubmit(onSubmit)}>
