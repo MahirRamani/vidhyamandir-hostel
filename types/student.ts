@@ -19,7 +19,7 @@ export interface Student {
   lastExamGiven: string;
   lastExamPercentage: number;
   hobbies: string[];
-  bloodGroup: "A+" | "A-" | "B+" | "B-" | "O+" | "O-" | "AB+" | "AB-";
+  bloodGroup: "A+" | "A-" | "B+" | "B-" | "O+" | "O-" | "AB+" | "AB-" | "-";
   illnesses: string[];
   allergies: string[];
   fatherName: {

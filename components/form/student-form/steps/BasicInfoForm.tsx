@@ -1,10 +1,89 @@
-import React from "react";
+// import { useForm } from "react-hook-form";
+// import { zodResolver } from "@hookform/resolvers/zod";
+// import { basicInfoSchema } from "@/schema/student-form";
+// import { StepProps } from "@/types/student-form";
+// import {
+//   Form,
+//   FormControl,
+//   FormDescription,
+//   FormField,
+//   FormItem,
+//   FormLabel,
+//   FormMessage,
+// } from "@/components/ui/form";
+// import { useCallback, useEffect } from "react";
+// import { Input } from "@/components/ui/input";
+// import { debounce } from "lodash";
+// import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+// import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+// import { Button } from "@/components/ui/button";
+// import { cn } from "@/lib/utils";
+// import { format } from "date-fns";
+// import { CalendarIcon } from "lucide-react";
+// import { Calendar } from "@/components/ui/calendar";
+// import { Textarea } from "@/components/ui/textarea";
+
+// export function BasicInfoForm({
+//   onNext,
+//   formData,
+//   setFormData,
+//   validateStep,
+// }: StepProps) {
+//   const basicInfoForm = useForm({
+//     resolver: zodResolver(basicInfoSchema),
+//     defaultValues: {
+//       name: {
+//         firstName: formData.name.firstName,
+//         middleName: formData.name.middleName,
+//         lastName: formData.name.lastName,
+//       },
+//       profileImageUrl: formData.profileImageUrl,
+//       dateOfBirth: formData.dateOfBirth,
+//       studentId: formData.studentId,
+//       isPermanentId: formData.isPermanentId,
+//       hobbies: formData.hobbies,
+//       status: formData.status,
+//       isSatsangi: formData.isSatsangi,
+//       isBAPSSatsangi: formData.isBAPSSatsangi,
+//       yearsOfSatsang: formData.yearsOfSatsang,
+//     },
+//   });
+
+//   //   // Auto-save on field change
+//   //   const watchedValues = form.watch();
+//   //   useEffect(() => {
+//   //     setFormData(watchedValues);
+//   //   }, [watchedValues, setFormData]);
+
+//   const debouncedSave = useCallback(
+//     debounce((data) => {
+//       setFormData(data);
+//     }, 300),
+//     [setFormData]
+//     );
+    
+//     // Watch specific fields instead of all values
+//   const watchedValues = basicInfoForm.watch();
+  
+//   useEffect(() => {
+//     // Only save if form is dirty (has changes)
+//     if (basicInfoForm.formState.isDirty) {
+//       debouncedSave(watchedValues);
+//     }
+//   }, [watchedValues, debouncedSave, basicInfoForm.formState.isDirty]);
+
+//   const onSubmit = async (data: any) => {
+//     setFormData(data);
+//     const isValid = await validateStep();
+//     if (isValid && onNext) {
+//       onNext();
+//     }
+//   };
+
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { basicInfoSchema } from "@/schema/student-form";
 import { StepProps } from "@/types/student-form";
-import z from "zod";
 import {
   Form,
   FormControl,
@@ -14,99 +93,90 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Popover } from "@radix-ui/react-popover";
-import { CalendarIcon } from "lucide-react";
-import { Calendar } from "@/components/ui/calendar";
+import { useCallback, useEffect } from "react";
+import { Input } from "@/components/ui/input";
+import { debounce } from "lodash";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { CalendarIcon } from "lucide-react";
+import { Calendar } from "@/components/ui/calendar";
 import { Textarea } from "@/components/ui/textarea";
-import { studentSchema } from "@/schema/student";
+import { toast } from "sonner";
 
-export function BasicInfoForm({ onNext, formData, setFormData }: StepProps) {
-  // Create a more explicit schema to avoid type issues
-  const basicInfoSchema = z.object({
-    name: z.object({
-      firstName: z.string().nonempty(),
-      middleName: z.string(),
-      lastName: z.string(),
-    }),
-    profileImageUrl: z.string(),
-    dateOfBirth: z.date(),
-    studentId: z.string(),
-    isPermanentId: z.boolean(),
-    hobbies: z.array(z.string()).optional(),
-    status: z.enum(["Pending", "Tested", "Active", "NOC", "NOC-Cancel"]),
-    isSatsangi: z.boolean(),
-    isBAPSSatsangi: z.boolean().optional(),
-    yearsOfSatsang: z.number().optional(),
-  });
-
-  type BasicInfoFormData = z.infer<typeof basicInfoSchema>;
-
-  const basicInfoForm = useForm<BasicInfoFormData>({
+export function BasicInfoForm({
+  onNext,
+  formData,
+  setFormData,
+  validateStep,
+}: StepProps) {
+  const basicInfoForm = useForm({
     resolver: zodResolver(basicInfoSchema),
     defaultValues: {
       name: {
-        firstName: "",
-        middleName: "",
-        lastName: "",
+        firstName: formData.name.firstName,
+        middleName: formData.name.middleName,
+        lastName: formData.name.lastName,
       },
-      profileImageUrl: "",
-      dateOfBirth: undefined,
-      studentId: "",
-      isPermanentId: true,
-      hobbies: [],
-      status: "Tested",
-      isSatsangi: true,
-      isBAPSSatsangi: false,
-      yearsOfSatsang: 0,
+      profileImageUrl: formData.profileImageUrl,
+      dateOfBirth: formData.dateOfBirth,
+      studentId: formData.studentId,
+      isPermanentId: formData.isPermanentId,
+      hobbies: formData.hobbies,
+      status: formData.status,
+      isSatsangi: formData.isSatsangi,
+      isBAPSSatsangi: formData.isBAPSSatsangi,
+      yearsOfSatsang: formData.yearsOfSatsang,
     },
   });
 
-  // const onSubmit = (data: BasicInfoFormData) => {
+  const debouncedSave = useCallback(
+    debounce((data) => {
+      setFormData(data);
+    }, 300),
+    [setFormData]
+  );
     
-  //   setFormData(data);
-  //   onNext?.();
-  // };
+  // Watch specific fields instead of all values
+  const watchedValues = basicInfoForm.watch();
+  
+  useEffect(() => {
+    // Only save if form is dirty (has changes)
+    if (basicInfoForm.formState.isDirty) {
+      debouncedSave(watchedValues);
+    }
+  }, [watchedValues, debouncedSave, basicInfoForm.formState.isDirty]);
 
-  const onSubmit = async (data: BasicInfoFormData) => {
-    console.log("Form submitted with data:", data);
-    
+  const onSubmit = async (data: any) => {
     try {
-      // Validate the form data (this is redundant since form already validates, but good for debugging)
-      const validatedData = basicInfoSchema.parse(data);
-      console.log("Validated data:", validatedData);
+      // Update form data first
+      setFormData(data);
       
-      // Merge with existing form data
-      const updatedFormData = { ...formData, ...validatedData };
-      console.log("Updated form data:", updatedFormData);
+      // Validate the step
+      const isValid = await validateStep();
       
-      // Update parent state
-      setFormData(updatedFormData);
-      
-      // Proceed to next step
-      if (onNext) {
-        console.log("Calling onNext");
+      if (isValid && onNext) {
         onNext();
-      } else {
-        console.error("onNext is not defined!");
       }
+      // If validation fails, the toast will be shown from validateStep
     } catch (error) {
-      console.error("Form validation failed:", error);
+      // Handle any unexpected errors
+      toast.error("Unexpected Error", {
+        description: "An unexpected error occurred. Please try again.",
+        duration: 3000,
+      });
+      
+      if (process.env.NODE_ENV === 'development') {
+        console.error("Form submission error:", error);
+      }
     }
   };
-
   return (
     <Form {...basicInfoForm}>
       <form onSubmit={basicInfoForm.handleSubmit(onSubmit)}>
+        {/* Your form fields here */}
         <FormField
           control={basicInfoForm.control}
           name="name.firstName"
@@ -374,166 +444,9 @@ export function BasicInfoForm({ onNext, formData, setFormData }: StepProps) {
             </FormItem>
           )}
         />
-
-        <Button type="submit">Next</Button>
+        {/* More fields... */}
+        {/* <Button type="submit">Next</Button> */}
       </form>
     </Form>
   );
 }
-
-// import React from "react";
-// import { useForm } from "react-hook-form";
-// import { zodResolver } from "@hookform/resolvers/zod";
-// import { Button } from "@/components/ui/button";
-// import { Input } from "@/components/ui/input";
-// import { Label } from "@/components/ui/label";
-// import { studentSchema } from "@/schema/student";
-// import { StepProps, studentFormData } from "@/types/student-form";
-// import z from "zod";
-// import {
-//   Form,
-//   FormControl,
-//   FormDescription,
-//   FormField,
-//   FormItem,
-//   FormLabel,
-//   FormMessage,
-// } from "@/components/ui/form";
-// import { PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-// import { Popover } from "@radix-ui/react-popover";
-// import { CalendarIcon } from "lucide-react";
-// import { Calendar } from "@/components/ui/calendar";
-// import { cn } from "@/lib/utils";
-// import { format } from "date-fns";
-
-// export function BasicInfoForm({ onNext, formData, setFormData }: StepProps) {
-//   const basicInfoSchema = studentSchema.pick({
-//     name: true,
-//     profileImageUrl: true,
-//     dateOfBirth: true,
-//   });
-
-//   type BasicInfoFormData = z.infer<typeof basicInfoSchema>;
-
-//   const basicInfoForm = useForm<BasicInfoFormData>({
-//     resolver: zodResolver(basicInfoSchema),
-//     defaultValues: {
-//       name: {
-//         firstName: "",
-//         middleName: "",
-//         lastName: "",
-//       },
-
-//       dateOfBirth: new Date(),
-//       //   profileImageUrl: formData.profileImageUrl,
-//     },
-//   });
-
-//   const onSubmit = (data: BasicInfoFormData) => {
-//     setFormData(data);
-//     onNext?.();
-//   };
-
-//   return (
-//     <Form {...basicInfoForm}>
-//       <form onSubmit={basicInfoForm.handleSubmit(onSubmit)}>
-//         <FormField
-//           control={basicInfoForm.control}
-//           name="name.firstName"
-//           render={({ field }) => (
-//             <FormItem>
-//               <FormLabel>First Name</FormLabel>
-//               <FormControl>
-//                 <Input placeholder="First Name" {...field} />
-//               </FormControl>
-//               <FormDescription>This is your first name.</FormDescription>
-//               <FormMessage />
-//             </FormItem>
-//           )}
-//         />
-
-//         <FormField
-//           control={basicInfoForm.control}
-//           name="name.middleName"
-//           render={({ field }) => (
-//             <FormItem>
-//               <FormLabel>Middle Name</FormLabel>
-//               <FormControl>
-//                 <Input placeholder="Middle Name" {...field} />
-//               </FormControl>
-//               <FormDescription>This is your middle name.</FormDescription>
-//               <FormMessage />
-//             </FormItem>
-//           )}
-//         />
-
-//         <FormField
-//           control={basicInfoForm.control}
-//           name="name.lastName"
-//           render={({ field }) => (
-//             <FormItem>
-//               <FormLabel>Last Name</FormLabel>
-//               <FormControl>
-//                 <Input placeholder="Last Name" {...field} />
-//               </FormControl>
-//               <FormDescription>This is your Last name.</FormDescription>
-//               <FormMessage />
-//             </FormItem>
-//           )}
-//         />
-
-//         <FormField
-//           control={basicInfoForm.control}
-//           name="dateOfBirth"
-//           render={({ field }) => (
-//             <FormItem className="flex flex-col">
-//               <FormLabel>Date of birth</FormLabel>
-//               <Popover>
-//                 <PopoverTrigger asChild>
-//                   <FormControl>
-//                     <Button
-//                       variant={"outline"}
-//                       className={cn(
-//                         "w-[240px] pl-3 text-left font-normal",
-//                         !field.value && "text-muted-foreground"
-//                       )}
-//                     >
-//                       {/* {field.value ? (
-//                         format(field.value, "PPP")
-//                       ) : (
-//                         <span>Pick a date</span>
-//                       )} */}
-//                       {field.value ? (
-//                         format(field.value, "dd/MM/yyyy")
-//                       ) : (
-//                         <span>Pick a date</span>
-//                       )}
-//                       <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-//                     </Button>
-//                   </FormControl>
-//                 </PopoverTrigger>
-//                 <PopoverContent className="w-auto p-0" align="start">
-//                   <Calendar
-//                     mode="single"
-//                     selected={field.value}
-//                     onSelect={field.onChange}
-//                     disabled={(date) =>
-//                       date > new Date() || date < new Date("1900-01-01")
-//                     }
-//                     captionLayout="dropdown"
-//                   />
-//                 </PopoverContent>
-//               </Popover>
-//               <FormDescription>
-//                 Your date of birth is used to calculate your age.
-//               </FormDescription>
-//               <FormMessage />
-//             </FormItem>
-//           )}
-//         />
-
-//         <Button type="submit">Nexto</Button>
-//       </form>
-//     </Form>
-//   );
-// }

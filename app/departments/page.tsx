@@ -1,5 +1,6 @@
 import MainLayout from "@/components/layout/main-layout"
 import StudentCard from '../../components/student-panel/student-card';
+import { DepartmentDashboard } from './DepartmentDashboard';
 
 
 export default function Departments() {
@@ -16,11 +17,11 @@ export default function Departments() {
         /> */}
 
                 
-            <StudentCard />
+            {/* <StudentCard /> */}
 
         {/* Main Content */}
         
-                
+                <DepartmentDashboard />
                 
       </div>
 

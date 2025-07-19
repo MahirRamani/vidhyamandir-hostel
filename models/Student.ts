@@ -9,6 +9,10 @@ export interface IStudent extends Document {
   };
   profileImageUrl: string;
   dateOfBirth: Date;
+  hobbies: string[];
+  skills: string[];
+  achievements: string[];
+
 
   studentId: string;
   isPermanentId: boolean;
@@ -18,14 +22,14 @@ export interface IStudent extends Document {
   departmentId: Schema.Types.ObjectId;
 
   admissionYear: string;
-  schoolRollNo: string;
+  schoolRollNo: number;
   standard: number;
   medium: 'Gujarati' | 'English' | 'Hindi';
+  lastSchool: string;
   lastExamGiven: string;
   lastExamPercentage: number;
   
-  hobbies: string[];
-  bloodGroup: 'A+' | 'A-' | 'B+' | 'B-' | 'O+' | 'O-' | 'AB+' | 'AB-';
+  bloodGroup: 'A+' | 'A-' | 'B+' | 'B-' | 'O+' | 'O-' | 'AB+' | 'AB-' | '-';
   illnesses: string[];
   allergies: string[];
 
@@ -51,6 +55,7 @@ export interface IStudent extends Document {
     pincode: string;
     country: string;
   };
+  nativePlace: string;
 
   admissionDate: Date;
   leavingDate: Date;
@@ -93,6 +98,18 @@ const StudentSchema = new Schema<IStudent>(
       type: Date,
       required: true,
     },
+    hobbies: {
+      type: [String],
+      required: false,
+    },
+    skills: {
+      type: [String],
+      required: false,
+    },
+    achievements: {
+      type: [String],
+      required: false,
+    },
     studentId: {
       type: String,
       required: true,
@@ -127,7 +144,7 @@ const StudentSchema = new Schema<IStudent>(
       required: true,
     },
     schoolRollNo: {
-      type: String,
+      type: Number,
       required: true,
     },
     standard: {
@@ -144,6 +161,10 @@ const StudentSchema = new Schema<IStudent>(
       },
       required: true,
     },
+    lastSchool: {
+      type: String,
+      required: true,
+    },
     lastExamGiven: {
       type: String,
       required: true,
@@ -151,10 +172,6 @@ const StudentSchema = new Schema<IStudent>(
     lastExamPercentage: {
       type: Number,
       required: true,
-    },
-    hobbies: {
-      type: [String],
-      required: false,
     },
     bloodGroup: {
       type: String,
@@ -240,6 +257,10 @@ const StudentSchema = new Schema<IStudent>(
         type: String,
         required: true,
       },
+    },
+    nativePlace: {
+      type: String,
+      required: true,
     },
 
     admissionDate: {

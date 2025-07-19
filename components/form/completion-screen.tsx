@@ -2,10 +2,10 @@ import React from 'react';
 import { CheckCircle } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { studentFormData } from '@/types/student-form';
+import { StudentFormData } from '@/types/student-form';
 
 interface CompletionScreenProps {
-  formData: Partial<studentFormData>;
+  formData: Partial<StudentFormData>;
   onReset: () => void;
 }
 

@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Plus, Search } from "lucide-react";
 import MultiStepOnboarding from "@/components/form/student-form/student-form";
+import { MultistepForm } from '../../components/form/student-form/MultistepForm';
 
 export default function Students() {
   return (
@@ -13,7 +14,8 @@ export default function Students() {
       subtitle="Manage student records and room assignments"
     >
       <div className="p-6 space-y-6">
-        <MultiStepOnboarding />
+        {/* <MultiStepOnboarding /> */}
+        <MultistepForm />
       </div>
     </MainLayout>
     // <MainLayout
